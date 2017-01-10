@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = "0.0.1"
   s.summary      = "An iOS drawer controller in swift."
   s.description  = <<-DESC
-                   n iOS drawer controller in swift.
+                   A light-weighted iOS drawer controller in swift.
                    DESC
   s.homepage     = "https://github.com/superk589/ZKDrawerController"
   s.license      = "MIT"
