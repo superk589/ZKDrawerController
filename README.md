@@ -22,7 +22,17 @@ end
 let centerController = UIViewController()
 let leftController = UIViewController()
 let rightController = UIViewController()
+
+// have two sides
 let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: leftController)
+
+// only have right or left side
+let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: nil)
+let drawerController = ZKDrawerController.init(main: centerController, right: nil, left: leftController)
+
+// have none of the two sides, and then add dynamically
+let drawerController = ZKDrawerController.init(main: centerController, right: nil, left: nil)
+drawerController.rightVC = UIViewController()
 ```
 ### set drawer style
 ```swift
@@ -65,7 +75,11 @@ drawerController.gestureRecognizerWidth = 40
 
 ### set the side or main controller dynamically
 ```swift
+// set or replace
 drawerController.mainVC = newViewController
 drawerController.rightVC = newViewController
 drawerController.leftVC = newViewController
+// remove the side view controller, mainVC can not be removed
+drawerController.rightVC = nil
+drawerController.leftVC = nil
 ```
