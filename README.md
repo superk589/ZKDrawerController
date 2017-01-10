@@ -48,8 +48,8 @@ drawerController.drawerStyle = .plain
 
 ### show or hide side controller manually
 ```swift
-drawerController.showRight(animated: Bool)
-drawerController.showLeft(animated: Bool)
+drawerController.showRight(animated: true)
+drawerController.showLeft(animated: true)
 ```
 
 ### set main controller's scale
@@ -57,6 +57,22 @@ drawerController.showLeft(animated: Bool)
 // scale should be 0 to 1
 drawerController.mainScale = 0.8
 ```
+
+### set background color or image
+```swift
+// set background color
+drawerController.containerView.backgroundColor = UIColor.white
+
+// set background image
+drawerController.backgroundImageView.image = image
+```
+
+### set center controller's view foreground color while side view is showing
+```swift
+// this view will change it's alpha while side view is showing from 0 to 1
+drawerController.mainCoverView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+```
+
 ### set left and right side width
 ```swift
 drawerController.defalutRightWidth = 300
@@ -82,4 +98,35 @@ drawerController.leftVC = newViewController
 // remove the side view controller, mainVC can not be removed
 drawerController.rightVC = nil
 drawerController.leftVC = nil
+```
+
+### use ZKDrawerController as your root controller and show controller-based side controller.
+```swift
+// in AppDelegate.swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    let home = ViewController()
+    let nav = UINavigationController(rootViewController: home)
+    let drawer = ZKDrawerController(main: nav, right: nil, left: nil)
+    // do some setup
+    drawer.mainScale = 0.8
+    drawer.drawerStyle = .cover
+    // ...
+    window = UIWindow()
+    window?.rootViewController = drawer
+    window?.makeKeyAndVisible()
+    home.drawerController = drawer
+    return true
+}
+
+// in ViewController.swift
+var drawerController: ZKDrawerController!
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    let rightVC = UIViewController()
+    drawerController.rightVC = rightVC
+}
+override func viewWillDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    drawerController.rightVC = nil   
+}
 ```

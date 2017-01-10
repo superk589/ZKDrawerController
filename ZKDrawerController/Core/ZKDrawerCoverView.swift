@@ -9,23 +9,24 @@
 import UIKit
 
 protocol ZKDrawerCoverViewDelegate: class {
-    func drawerCoverViewDidDismiss(_ view: ZKDrawerCoverView)
+    func drawerCoverViewTapped(_ view: ZKDrawerCoverView)
 }
 
-class ZKDrawerCoverView: UIView {
+public class ZKDrawerCoverView: UIView {
 
     weak var delegate: ZKDrawerCoverViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction))
+        addGestureRecognizer(tap)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.drawerCoverViewDidDismiss(self)
+    func tapAction() {
+        delegate?.drawerCoverViewTapped(self)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     /*

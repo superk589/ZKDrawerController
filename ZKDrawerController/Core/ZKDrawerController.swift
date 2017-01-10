@@ -50,6 +50,9 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 作为容器的滚动视图
     open var containerView: ZKDrawerScrollView!
     
+    /// 背景图片视图
+    open var backgroundImageView: UIImageView!
+    
     /// 左侧阴影
     var leftShadowView: ZKDrawerShadowView!
     
@@ -57,7 +60,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     var rightShadowView: ZKDrawerShadowView!
     
     /// 主视图蒙层
-    var mainCoverView: ZKDrawerCoverView!
+    open var mainCoverView: ZKDrawerCoverView!
     
     var lastStatus: ZKDrawerStatus = .center
     
@@ -105,6 +108,11 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     public init(main: UIViewController, right: UIViewController?, left: UIViewController?) {
         super.init(nibName: nil, bundle: nil)
         containerView = ZKDrawerScrollView()
+        backgroundImageView = UIImageView()
+        containerView.addSubview(backgroundImageView)
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
         
         view.addSubview(containerView)
         containerView.snp.makeConstraints { (make) in
@@ -177,7 +185,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
                 containerView.bringSubview(toFront: rightShadow)
             }
         } else {
-            containerView.leftWidth = 0
+            leftWidth = 0
         }
     }
     
@@ -224,7 +232,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         vc?.removeFromParentViewController()
     }
     
-    func drawerCoverViewDidDismiss(_ view: ZKDrawerCoverView) {
+    func drawerCoverViewTapped(_ view: ZKDrawerCoverView) {
         if status == .right {
             self.hideRight(animated: true)
         } else if status == .left {
@@ -365,7 +373,12 @@ extension ZKDrawerController: UIScrollViewDelegate {
         addPageAnimation(scrollView)
     }
     
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollView.isUserInteractionEnabled = true
+    }
 
+    
+    // 用于添加类似pageEnabled的效果
     func addPageAnimation(_ scrollView: UIScrollView) {
         let width = scrollView.frame.size.width
         let offsetX = scrollView.contentOffset.x

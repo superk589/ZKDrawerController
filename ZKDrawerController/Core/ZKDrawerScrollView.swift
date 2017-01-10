@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 public class ZKDrawerScrollView: UIScrollView {
-
     
     var rightWidth: CGFloat = 0
     
@@ -24,7 +23,7 @@ public class ZKDrawerScrollView: UIScrollView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.isPagingEnabled = true
+
         self.backgroundColor = UIColor.clear
         self.showsHorizontalScrollIndicator = false
         self.bounces = false
@@ -49,12 +48,12 @@ public class ZKDrawerScrollView: UIScrollView {
         
         if self.contentOffset.x == 0 && leftWidth > 0 {
             //当偏移量为0时（左侧菜单完全展示）
-            if point.x < leftWidth {
+            if point.x < self.frame.size.width {
                 return true
             }
         } else if self.contentOffset.x == contentSize.width - self.frame.size.width && rightWidth > 0 {
             //当偏移量为contentSize.width时（右侧菜单完全展示）
-            if point.x + rightWidth > contentSize.width {
+            if point.x + self.frame.size.width > contentSize.width {
                 return true
             }
             
@@ -65,5 +64,10 @@ public class ZKDrawerScrollView: UIScrollView {
         }
         return false
     }
-    
+    public override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+        super.setContentOffset(contentOffset, animated: animated)
+        if animated && contentOffset != self.contentOffset {
+            self.isUserInteractionEnabled = false 
+        }
+    }
 }

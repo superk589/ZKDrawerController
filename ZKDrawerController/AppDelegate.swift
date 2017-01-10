@@ -26,10 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let right = UIViewController()
         right.view.backgroundColor = UIColor.brown
         let left = UIViewController()
-        left.view.backgroundColor = UIColor.green
+        left.view.backgroundColor = UIColor.clear
         let drawer = ZKDrawerController(main: nav, right: right, left: left)
         drawer.mainScale = 0.8
-        drawer.drawerStyle = .cover
+        drawer.containerView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        drawer.drawerStyle = .plain
+        drawer.mainCoverView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         window?.rootViewController = drawer
         home.drawerController = drawer
