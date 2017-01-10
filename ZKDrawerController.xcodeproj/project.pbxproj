@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		123AC73E1E23A56C0016A07F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC73D1E23A56C0016A07F /* AppDelegate.swift */; };
+		123AC7401E23A56C0016A07F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC73F1E23A56C0016A07F /* ViewController.swift */; };
+		123AC7431E23A56C0016A07F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 123AC7411E23A56C0016A07F /* Main.storyboard */; };
+		123AC7451E23A56C0016A07F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 123AC7441E23A56C0016A07F /* Assets.xcassets */; };
+		123AC7481E23A56C0016A07F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 123AC7461E23A56C0016A07F /* LaunchScreen.storyboard */; };
+		123AC7541E23A6850016A07F /* ZKDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC7501E23A6850016A07F /* ZKDrawerController.swift */; };
+		123AC7551E23A6850016A07F /* ZKDrawerCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC7511E23A6850016A07F /* ZKDrawerCoverView.swift */; };
+		123AC7561E23A6850016A07F /* ZKDrawerScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC7521E23A6850016A07F /* ZKDrawerScrollView.swift */; };
+		123AC7571E23A6850016A07F /* ZKDrawerShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AC7531E23A6850016A07F /* ZKDrawerShadowView.swift */; };
+		479EA2801A6635DA929D2D69 /* Pods_ZKDrawerController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A85C167BCECC09ED5030281B /* Pods_ZKDrawerController.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		123AC73A1E23A56C0016A07F /* ZKDrawerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZKDrawerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		123AC73D1E23A56C0016A07F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		123AC73F1E23A56C0016A07F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		123AC7421E23A56C0016A07F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		123AC7441E23A56C0016A07F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		123AC7471E23A56C0016A07F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		123AC7491E23A56C0016A07F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		123AC7501E23A6850016A07F /* ZKDrawerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZKDrawerController.swift; sourceTree = "<group>"; };
+		123AC7511E23A6850016A07F /* ZKDrawerCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZKDrawerCoverView.swift; sourceTree = "<group>"; };
+		123AC7521E23A6850016A07F /* ZKDrawerScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZKDrawerScrollView.swift; sourceTree = "<group>"; };
+		123AC7531E23A6850016A07F /* ZKDrawerShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZKDrawerShadowView.swift; sourceTree = "<group>"; };
+		895C8E78FEAABF6F141F2CA3 /* Pods-ZKDrawerController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZKDrawerController.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZKDrawerController/Pods-ZKDrawerController.release.xcconfig"; sourceTree = "<group>"; };
+		A85C167BCECC09ED5030281B /* Pods_ZKDrawerController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZKDrawerController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E065C7514F85DC0E7D68A0D1 /* Pods-ZKDrawerController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZKDrawerController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZKDrawerController/Pods-ZKDrawerController.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		123AC7371E23A56C0016A07F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				479EA2801A6635DA929D2D69 /* Pods_ZKDrawerController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		123AC7311E23A56C0016A07F = {
+			isa = PBXGroup;
+			children = (
+				123AC73C1E23A56C0016A07F /* ZKDrawerController */,
+				123AC73B1E23A56C0016A07F /* Products */,
+				F6F2ABEAE4E4FB430A718D35 /* Pods */,
+				1BD9E325373CDC2E80F5928F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		123AC73B1E23A56C0016A07F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				123AC73A1E23A56C0016A07F /* ZKDrawerController.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		123AC73C1E23A56C0016A07F /* ZKDrawerController */ = {
+			isa = PBXGroup;
+			children = (
+				123AC74F1E23A6850016A07F /* Core */,
+				123AC73D1E23A56C0016A07F /* AppDelegate.swift */,
+				123AC73F1E23A56C0016A07F /* ViewController.swift */,
+				123AC7411E23A56C0016A07F /* Main.storyboard */,
+				123AC7441E23A56C0016A07F /* Assets.xcassets */,
+				123AC7461E23A56C0016A07F /* LaunchScreen.storyboard */,
+				123AC7491E23A56C0016A07F /* Info.plist */,
+			);
+			path = ZKDrawerController;
+			sourceTree = "<group>";
+		};
+		123AC74F1E23A6850016A07F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				123AC7501E23A6850016A07F /* ZKDrawerController.swift */,
+				123AC7511E23A6850016A07F /* ZKDrawerCoverView.swift */,
+				123AC7521E23A6850016A07F /* ZKDrawerScrollView.swift */,
+				123AC7531E23A6850016A07F /* ZKDrawerShadowView.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		1BD9E325373CDC2E80F5928F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A85C167BCECC09ED5030281B /* Pods_ZKDrawerController.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6F2ABEAE4E4FB430A718D35 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E065C7514F85DC0E7D68A0D1 /* Pods-ZKDrawerController.debug.xcconfig */,
+				895C8E78FEAABF6F141F2CA3 /* Pods-ZKDrawerController.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		123AC7391E23A56C0016A07F /* ZKDrawerController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 123AC74C1E23A56C0016A07F /* Build configuration list for PBXNativeTarget "ZKDrawerController" */;
+			buildPhases = (
+				CFF875100FAF0B9DF4B2E437 /* [CP] Check Pods Manifest.lock */,
+				123AC7361E23A56C0016A07F /* Sources */,
+				123AC7371E23A56C0016A07F /* Frameworks */,
+				123AC7381E23A56C0016A07F /* Resources */,
+				1885BAC9A3E4D05520722779 /* [CP] Embed Pods Frameworks */,
+				BF5025AF374CFDCE96F9078A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZKDrawerController;
+			productName = ZKDrawerController;
+			productReference = 123AC73A1E23A56C0016A07F /* ZKDrawerController.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		123AC7321E23A56C0016A07F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = zzk;
+				TargetAttributes = {
+					123AC7391E23A56C0016A07F = {
+						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = MXJJEEMF3U;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 123AC7351E23A56C0016A07F /* Build configuration list for PBXProject "ZKDrawerController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 123AC7311E23A56C0016A07F;
+			productRefGroup = 123AC73B1E23A56C0016A07F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				123AC7391E23A56C0016A07F /* ZKDrawerController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		123AC7381E23A56C0016A07F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				123AC7481E23A56C0016A07F /* LaunchScreen.storyboard in Resources */,
+				123AC7451E23A56C0016A07F /* Assets.xcassets in Resources */,
+				123AC7431E23A56C0016A07F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1885BAC9A3E4D05520722779 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZKDrawerController/Pods-ZKDrawerController-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BF5025AF374CFDCE96F9078A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZKDrawerController/Pods-ZKDrawerController-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFF875100FAF0B9DF4B2E437 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		123AC7361E23A56C0016A07F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				123AC7401E23A56C0016A07F /* ViewController.swift in Sources */,
+				123AC7571E23A6850016A07F /* ZKDrawerShadowView.swift in Sources */,
+				123AC7561E23A6850016A07F /* ZKDrawerScrollView.swift in Sources */,
+				123AC73E1E23A56C0016A07F /* AppDelegate.swift in Sources */,
+				123AC7541E23A6850016A07F /* ZKDrawerController.swift in Sources */,
+				123AC7551E23A6850016A07F /* ZKDrawerCoverView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		123AC7411E23A56C0016A07F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				123AC7421E23A56C0016A07F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		123AC7461E23A56C0016A07F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				123AC7471E23A56C0016A07F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		123AC74A1E23A56C0016A07F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		123AC74B1E23A56C0016A07F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		123AC74D1E23A56C0016A07F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E065C7514F85DC0E7D68A0D1 /* Pods-ZKDrawerController.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MXJJEEMF3U;
+				INFOPLIST_FILE = ZKDrawerController/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzk.ZKDrawerController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		123AC74E1E23A56C0016A07F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 895C8E78FEAABF6F141F2CA3 /* Pods-ZKDrawerController.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MXJJEEMF3U;
+				INFOPLIST_FILE = ZKDrawerController/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zzk.ZKDrawerController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		123AC7351E23A56C0016A07F /* Build configuration list for PBXProject "ZKDrawerController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				123AC74A1E23A56C0016A07F /* Debug */,
+				123AC74B1E23A56C0016A07F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		123AC74C1E23A56C0016A07F /* Build configuration list for PBXNativeTarget "ZKDrawerController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				123AC74D1E23A56C0016A07F /* Debug */,
+				123AC74E1E23A56C0016A07F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 123AC7321E23A56C0016A07F /* Project object */;
+}
