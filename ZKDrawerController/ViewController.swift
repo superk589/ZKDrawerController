@@ -15,7 +15,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showRight))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showLeft))
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func showLeft() {
+        drawerController.showLeft(animated: true)
+    }
+    func showRight() {
+        drawerController.showRight(animated: true)
     }
 
     override func didReceiveMemoryWarning() {

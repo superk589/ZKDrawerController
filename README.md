@@ -126,7 +126,7 @@ override func viewWillAppear(_ animated: Bool) {
     drawerController.rightVC = rightVC
 }
 override func viewWillDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
+    super.viewWillDisappear(animated)
     drawerController.rightVC = nil   
 }
 ```
