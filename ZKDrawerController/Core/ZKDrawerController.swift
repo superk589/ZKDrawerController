@@ -167,7 +167,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// - Parameter vc: 导航控制器 或者包含了导航控制器的父控制器
     open func resolveGestureConflict(vc: UIViewController) {
         if let nav = vc as? UINavigationController {
-            if let gesture = nav.navigationController?.interactivePopGestureRecognizer {
+            if let gesture = nav.interactivePopGestureRecognizer {
                 containerView.panGestureRecognizer.require(toFail: gesture)
             }
         }
