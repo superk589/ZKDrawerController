@@ -158,13 +158,25 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         rightShadowView.alpha = 0
         
         // 导航手势失败才可以执行左侧菜单手势
-        if let gesture = main.navigationController?.interactivePopGestureRecognizer {
-            containerView.panGestureRecognizer.require(toFail: gesture)
-        }
+        resolveGestureConflict(vc: main)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// 解决左侧抽屉划出手势和导航控制器手势冲突的问题
+    ///
+    /// - Parameter vc: 导航控制器 或者包含了导航控制器的父控制器
+    open func resolveGestureConflict(vc: UIViewController) {
+        if let nav = vc as? UINavigationController {
+            if let gesture = nav.navigationController?.interactivePopGestureRecognizer {
+                containerView.panGestureRecognizer.require(toFail: gesture)
+            }
+        }
+        for childVC in vc.childViewControllers {
+            resolveGestureConflict(vc: childVC)
+        }
     }
     
     func setupLeftVC(vc: UIViewController?) {
@@ -212,8 +224,6 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    var mainLeftConstrain: Constraint!
-    var mainRightConstrain: Constraint!
     func setupMainVC(vc: UIViewController) {
         self.addChildViewController(vc)
         containerView.addSubview(vc.view)

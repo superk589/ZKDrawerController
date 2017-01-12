@@ -39,7 +39,7 @@ drawerController.rightVC = UIViewController()
 // side controller covers the main controller, shadows the edge of side controllers' view
 drawerController.drawerStyle = .cover
 
-// side controller insert below the main controller, shadows the edge of main controller's view
+// side controller inserts below the main controller, shadows the edge of main controller's view
 drawerController.drawerStyle = .insert
 
 // side controller lays beside the main controller

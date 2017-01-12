@@ -14,10 +14,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.blue
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showRight))
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showLeft))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showLeft))
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let button = UIButton.init(frame: CGRect.init(x: 200, y: 200, width: 150, height: 100))
+        button.addTarget(self, action: #selector(push), for: .touchUpInside)
+        button.setTitle("进入下一层页面", for: .normal)
+        view.addSubview(button)
     }
     
     func showLeft() {
@@ -25,6 +31,11 @@ class ViewController: UIViewController {
     }
     func showRight() {
         drawerController.showRight(animated: true)
+    }
+    
+    func push() {
+        let vc = ViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

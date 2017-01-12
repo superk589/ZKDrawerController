@@ -22,11 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let home = ViewController()
         home.view.backgroundColor = UIColor.blue
+        
         let nav = UINavigationController(rootViewController: home)
+        
         let right = UIViewController()
         right.view.backgroundColor = UIColor.brown
+        
         let left = UIViewController()
         left.view.backgroundColor = UIColor.clear
+        
         let drawer = ZKDrawerController(main: nav, right: right, left: left)
         drawer.mainScale = 0.8
         drawer.containerView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
