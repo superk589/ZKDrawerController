@@ -156,16 +156,13 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
         leftShadowView.alpha = 0
         rightShadowView.alpha = 0
-        
-        // 导航手势失败才可以执行左侧菜单手势
-        resolveGestureConflict(vc: main)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// 解决左侧抽屉划出手势和导航控制器手势冲突的问题
+    /// 解决左侧抽屉划出手势和导航控制器手势冲突的问题, 默认在ZKDrawerController初始化时会进行调用
     ///
     /// - Parameter vc: 导航控制器 或者包含了导航控制器的父控制器
     open func resolveGestureConflict(vc: UIViewController) {
@@ -234,6 +231,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             make.right.equalTo(-rightWidth)
             make.width.equalToSuperview()
         }
+        // 如果主视图控制器包含导航控制器, 导航手势失败才可以执行左侧菜单手势
+        resolveGestureConflict(vc: vc)
     }
     
     func removeOldVC(vc: UIViewController?) {
