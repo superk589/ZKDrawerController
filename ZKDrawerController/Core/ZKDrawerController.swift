@@ -111,7 +111,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 主视图在抽屉出现后的缩放比例
     open var mainScale: CGFloat = 1
     
-    weak var delegate: ZKDrawerControllerDelegate?
+    open weak var delegate: ZKDrawerControllerDelegate?
     
     public convenience init(main: UIViewController, right: UIViewController) {
         self.init(main: main, right: right, left: nil)
