@@ -27,6 +27,7 @@ public class ZKDrawerScrollView: UIScrollView {
         self.backgroundColor = UIColor.clear
         self.showsHorizontalScrollIndicator = false
         self.bounces = false
+        self.isPagingEnabled = true
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -64,10 +65,10 @@ public class ZKDrawerScrollView: UIScrollView {
         }
         return false
     }
-    public override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-        super.setContentOffset(contentOffset, animated: animated)
-        if animated && contentOffset != self.contentOffset {
-            self.isUserInteractionEnabled = false 
-        }
-    }
+//    public override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+//        super.setContentOffset(contentOffset, animated: animated)
+//        if animated && contentOffset != self.contentOffset {
+//            self.isUserInteractionEnabled = false 
+//        }
+//    }
 }

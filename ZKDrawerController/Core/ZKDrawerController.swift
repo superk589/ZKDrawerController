@@ -23,6 +23,11 @@ public enum ZKDrawerStatus {
     case center
 }
 
+public protocol ZKDrawerControllerDelegate: class {
+    func drawerController(_ drawerVC: ZKDrawerController, willShow vc: UIViewController)
+    func drawerController(_ drawerVC: ZKDrawerController, didHide vc: UIViewController)
+}
+
 open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     open var defaultRightWidth: CGFloat = 300 {
@@ -88,6 +93,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 右侧抽屉视图控制器
     open var rightVC: UIViewController? {
         didSet {
+            removeOldVC(vc: leftVC)
             removeOldVC(vc: oldValue)
             setupRightVC(vc: rightVC)
         }
@@ -96,6 +102,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 左侧抽屉视图控制器
     open var leftVC: UIViewController? {
         didSet {
+            removeOldVC(vc: rightVC)
             removeOldVC(vc: oldValue)
             setupLeftVC(vc: leftVC)
         }
@@ -104,8 +111,21 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 主视图在抽屉出现后的缩放比例
     open var mainScale: CGFloat = 1
     
+    weak var delegate: ZKDrawerControllerDelegate?
     
-    public init(main: UIViewController, right: UIViewController?, left: UIViewController?) {
+    public convenience init(main: UIViewController, right: UIViewController) {
+        self.init(main: main, right: right, left: nil)
+    }
+    
+    public convenience init(main: UIViewController, left: UIViewController) {
+        self.init(main: main, right: nil, left: left)
+    }
+    
+    public convenience init(main: UIViewController) {
+        self.init(main: main, right: nil, left: nil)
+    }
+    
+    init(main: UIViewController, right: UIViewController?, left: UIViewController?) {
         super.init(nibName: nil, bundle: nil)
         containerView = ZKDrawerScrollView()
         backgroundImageView = UIImageView()
@@ -242,18 +262,14 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     }
     
     func drawerCoverViewTapped(_ view: ZKDrawerCoverView) {
-        if status == .right {
-            self.hideRight(animated: true)
-        } else if status == .left {
-            self.hideleft(animated: true)
-        }
+        hide(animated: true)
     }
 
-    /// 弹出预先设定好的右侧抽屉ViewController
+    /// 弹出预先设定好的抽屉ViewController
     ///
     /// - Parameter animated: 是否有过度动画
-    open func showRight(animated: Bool) {
-        if let frame = rightVC?.view.frame {
+    open func show(animated: Bool) {
+        if let frame = rightVC?.view.frame ?? leftVC?.view.frame {
             self.containerView.scrollRectToVisible(frame, animated: animated)
         }
     }
@@ -266,27 +282,18 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     ///   - animated: 是否有过度动画
     open func showRightVC(_ vc: UIViewController, animated: Bool) {
         rightVC = vc
-        showRight(animated: animated)
+        show(animated: animated)
     }
     
     
     /// 隐藏右侧抽屉
     ///
     /// - Parameter animated: 是否有过度动画
-    open func hideRight(animated: Bool) {
+    open func hide(animated: Bool) {
         self.containerView.setContentOffset(CGPoint.init(x: self.leftWidth, y: 0), animated: animated)
     }
     
-    /// 弹出预先设定好的左侧抽屉ViewController
-    ///
-    /// - Parameter animated: 是否有过度动画
-    open func showLeft(animated: Bool) {
-        if let frame = leftVC?.view.frame {
-            self.containerView.scrollRectToVisible(frame, animated: animated)
-        }
-    }
-    
-    
+
     /// 传入一个新的ViewController并从左侧弹出
     ///
     /// - Parameters:
@@ -294,16 +301,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     ///   - animated: 是否有过度动画
     open func showleftVC(_ vc: UIViewController, animated: Bool) {
         leftVC = vc
-        showLeft(animated: animated)
+        show(animated: animated)
     }
-    
-    /// 隐藏左侧抽屉
-    ///
-    /// - Parameter animated: 是否有过度动画
-    open func hideleft(animated: Bool) {
-        hideRight(animated: animated)
-    }
-    
     
 }
 
@@ -311,13 +310,16 @@ extension ZKDrawerController: UIScrollViewDelegate {
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        // 左右同时有抽屉时 在滑动回到正中时停止
-        if lastStatus != .center && lastStatus != status {
-            lastStatus = status
-            scrollView.setContentOffset(CGPoint.init(x: leftWidth, y: 0), animated: false)
-        } else {
-            lastStatus = status
+        if lastStatus == .center && lastStatus != status {
+            if let vc = rightVC ?? leftVC {
+                delegate?.drawerController(self, willShow: vc)
+            }
+        } else if lastStatus != .center && lastStatus != status {
+            if let vc = rightVC ?? leftVC {
+                delegate?.drawerController(self, willShow: vc)
+            }
         }
+        lastStatus = status
 
         let width = scrollView.frame.size.width
         let offsetX = scrollView.contentOffset.x
@@ -373,45 +375,45 @@ extension ZKDrawerController: UIScrollViewDelegate {
         }
     }
     
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            addPageAnimation(scrollView)
-        }
-    }
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        addPageAnimation(scrollView)
-    }
-    
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        scrollView.isUserInteractionEnabled = true
-    }
-
-    
-    // 用于添加类似pageEnabled的效果
-    func addPageAnimation(_ scrollView: UIScrollView) {
-        let width = scrollView.frame.size.width
-        let offsetX = scrollView.contentOffset.x
-        
-        /// 0 to 1 progress of the drawer showing
-        let progress: CGFloat = {
-            if status == .left {
-                return (leftWidth - offsetX) / leftWidth
-            } else if status == .right {
-                return (width + rightWidth - scrollView.contentSize.width + offsetX) / rightWidth
-            }
-            return 0
-        }()
-        
-        if progress >= 0.5 {
-            if status == .left {
-                scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
-            } else if status == .right {
-                scrollView.setContentOffset(CGPoint.init(x: scrollView.contentSize.width - width, y: 0), animated: true)
-            }
-        } else {
-            scrollView.setContentOffset(CGPoint.init(x: leftWidth, y: 0), animated: true)
-        }
-    }
+//    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//        if !decelerate {
+//            addPageAnimation(scrollView)
+//        }
+//    }
+//    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        addPageAnimation(scrollView)
+//    }
+//    
+//    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+//        scrollView.isUserInteractionEnabled = true
+//    }
+//
+//    
+//    // 用于添加类似pageEnabled的效果
+//    func addPageAnimation(_ scrollView: UIScrollView) {
+//        let width = scrollView.frame.size.width
+//        let offsetX = scrollView.contentOffset.x
+//        
+//        /// 0 to 1 progress of the drawer showing
+//        let progress: CGFloat = {
+//            if status == .left {
+//                return (leftWidth - offsetX) / leftWidth
+//            } else if status == .right {
+//                return (width + rightWidth - scrollView.contentSize.width + offsetX) / rightWidth
+//            }
+//            return 0
+//        }()
+//        
+//        if progress >= 0.5 {
+//            if status == .left {
+//                scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+//            } else if status == .right {
+//                scrollView.setContentOffset(CGPoint.init(x: scrollView.contentSize.width - width, y: 0), animated: true)
+//            }
+//        } else {
+//            scrollView.setContentOffset(CGPoint.init(x: leftWidth, y: 0), animated: true)
+//        }
+//    }
 
 }
 
