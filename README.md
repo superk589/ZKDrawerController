@@ -23,15 +23,14 @@ let centerController = UIViewController()
 let leftController = UIViewController()
 let rightController = UIViewController()
 
-// have two sides
-let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: leftController)
+// ZKDrawerController does not support for having two sides at the same time
 
 // only have right or left side
-let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: nil)
-let drawerController = ZKDrawerController.init(main: centerController, right: nil, left: leftController)
+let drawerController = ZKDrawerController.init(main: centerController, right: rightController)
+let drawerController = ZKDrawerController.init(main: centerController, left: leftController)
 
 // have none of the two sides, and then add dynamically
-let drawerController = ZKDrawerController.init(main: centerController, right: nil, left: nil)
+let drawerController = ZKDrawerController.init(main: centerController)
 drawerController.rightVC = UIViewController()
 ```
 ### set drawer style
@@ -48,8 +47,8 @@ drawerController.drawerStyle = .plain
 
 ### show or hide side controller manually
 ```swift
-drawerController.showRight(animated: true)
-drawerController.showLeft(animated: true)
+drawerController.show(animated: true)
+drawerController.hide(animated: true)
 ```
 
 ### set main controller's scale
@@ -111,7 +110,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     drawer.mainScale = 0.8
     drawer.drawerStyle = .cover
     // ...
-    window = UIWindow()
+    window = UIWindow(frame: UIScreen.main.bounds)
     window?.rootViewController = drawer
     window?.makeKeyAndVisible()
     home.drawerController = drawer

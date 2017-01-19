@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        window = UIWindow()
+        window = UIWindow.init(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
         let home = ViewController()
@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let left = UIViewController()
         left.view.backgroundColor = UIColor.clear
         
-        let drawer = ZKDrawerController.init(main: nav, left: left)
+        let drawer = ZKDrawerController.init(main: nav, right: right)
         drawer.mainScale = 0.8
         drawer.containerView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         drawer.drawerStyle = .plain

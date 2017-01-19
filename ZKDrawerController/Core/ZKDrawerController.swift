@@ -290,7 +290,14 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     ///
     /// - Parameter animated: 是否有过度动画
     open func hide(animated: Bool) {
-        self.containerView.setContentOffset(CGPoint.init(x: self.leftWidth, y: 0), animated: animated)
+        if #available(iOS 9.0, *) {
+            self.containerView.setContentOffset(CGPoint.init(x: self.leftWidth, y: 0), animated: animated)
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.containerView.contentOffset.x = self.leftWidth
+            })
+            
+        }
     }
     
 
