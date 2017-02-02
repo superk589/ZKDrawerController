@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.blue
         
         //navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showRight))
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showLeft))
+        // navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "show", style: .plain, target: self, action: #selector(showLeft))
         // Do any additional setup after loading the view, typically from a nib.
         
         let button = UIButton.init(frame: CGRect.init(x: 200, y: 200, width: 150, height: 100))

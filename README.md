@@ -88,6 +88,11 @@ drawerController.shadowWidth = 5
 drawerController.gestureRecognizerWidth = 40
 ```
 
+### should require failure of navigation pop gesture, default true (if setting false, showing left drawer gesture will have higher priority)
+```swift
+drawerController.shouldRequireFailureOfNavigationPopGesture = true
+```
+
 ### set the side or main controller dynamically
 ```swift
 // set or replace

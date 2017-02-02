@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-public class ZKDrawerScrollView: UIScrollView {
+public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
     
     var rightWidth: CGFloat = 0
     
@@ -21,6 +21,8 @@ public class ZKDrawerScrollView: UIScrollView {
     
     var gestureRecognizerWidth:CGFloat = 40
     
+    var shouldRequireFailureOfNavigationPopGesture: Bool = true
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -28,6 +30,7 @@ public class ZKDrawerScrollView: UIScrollView {
         self.showsHorizontalScrollIndicator = false
         self.bounces = false
         self.isPagingEnabled = true
+        self.panGestureRecognizer.delegate = self
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -65,6 +68,16 @@ public class ZKDrawerScrollView: UIScrollView {
         }
         return false
     }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer is UIScreenEdgePanGestureRecognizer {
+            return shouldRequireFailureOfNavigationPopGesture
+        } else {
+            return false
+        }
+    }
+    
+    
 //    public override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
 //        super.setContentOffset(contentOffset, animated: animated)
 //        if animated && contentOffset != self.contentOffset {
