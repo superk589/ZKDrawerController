@@ -23,11 +23,9 @@ let centerController = UIViewController()
 let leftController = UIViewController()
 let rightController = UIViewController()
 
-// ZKDrawerController does not support for having two sides at the same time
-
-// only have right or left side
 let drawerController = ZKDrawerController.init(main: centerController, right: rightController)
 let drawerController = ZKDrawerController.init(main: centerController, left: leftController)
+let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: leftController)
 
 // have none of the two sides, and then add dynamically
 let drawerController = ZKDrawerController.init(main: centerController)

@@ -29,7 +29,9 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         self.backgroundColor = UIColor.clear
         self.showsHorizontalScrollIndicator = false
         self.bounces = false
-        self.isPagingEnabled = true
+        // use custom paging behavior instead
+        self.decelerationRate = UIScrollViewDecelerationRateFast
+//        self.isPagingEnabled = true
         self.panGestureRecognizer.delegate = self
     }
     

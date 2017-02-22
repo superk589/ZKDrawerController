@@ -93,7 +93,6 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 右侧抽屉视图控制器
     open var rightVC: UIViewController? {
         didSet {
-            removeOldVC(vc: leftVC)
             removeOldVC(vc: oldValue)
             setupRightVC(vc: rightVC)
         }
@@ -102,7 +101,6 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 左侧抽屉视图控制器
     open var leftVC: UIViewController? {
         didSet {
-            removeOldVC(vc: rightVC)
             removeOldVC(vc: oldValue)
             setupLeftVC(vc: leftVC)
         }
@@ -308,6 +306,31 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
 }
 
 extension ZKDrawerController: UIScrollViewDelegate {
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let offset = scrollView.contentOffset
+        if velocity.x == 0 {
+            if offset.x > leftWidth + rightWidth / 2 {
+                targetContentOffset.pointee.x = rightWidth + leftWidth
+            } else if offset.x < leftWidth / 2 {
+                targetContentOffset.pointee.x = 0
+            } else {
+                targetContentOffset.pointee.x = leftWidth
+            }
+        } else if velocity.x > 0 {
+            if offset.x > leftWidth {
+                targetContentOffset.pointee.x = rightWidth + leftWidth
+            } else {
+                targetContentOffset.pointee.x = leftWidth
+            }
+        } else {
+            if offset.x < leftWidth {
+                targetContentOffset.pointee.x = 0
+            } else {
+                targetContentOffset.pointee.x = leftWidth
+            }
+        }
+    }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
