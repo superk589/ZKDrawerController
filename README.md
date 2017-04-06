@@ -72,8 +72,8 @@ drawerController.mainCoverView.backgroundColor = UIColor.black.withAlphaComponen
 
 ### set left and right side width
 ```swift
-drawerController.defalutRightWidth = 300
-drawerController.defalutLeftWidth = 300
+drawerController.defaultRightWidth = 300
+drawerController.defaultLeftWidth = 300
 
 ```
 ### set shadow width
@@ -102,7 +102,7 @@ drawerController.rightVC = nil
 drawerController.leftVC = nil
 ```
 
-### use ZKDrawerController as your root controller and show controller-based side controller.
+### use ZKDrawerController as your root controller and show various main controller-based side controllers.
 ```swift
 // in AppDelegate.swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -122,8 +122,8 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 // in ViewController.swift
 var drawerController: ZKDrawerController!
-override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     let rightVC = UIViewController()
     drawerController.rightVC = rightVC
 }

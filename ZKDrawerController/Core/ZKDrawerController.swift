@@ -67,8 +67,6 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 主视图蒙层
     open var mainCoverView: ZKDrawerCoverView!
     
-    var lastStatus: ZKDrawerStatus = .center
-    
     /// 阴影视图的宽度
     open var shadowWidth: CGFloat = 5 {
         didSet {
@@ -81,34 +79,35 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    
     /// 主视图控制器
     open var mainVC: UIViewController! {
         didSet {
-            removeOldVC(vc: oldValue)
-            setupMainVC(vc: mainVC)
+            remove(vc: oldValue)
+            setupMain(vc: mainVC)
         }
     }
     
     /// 右侧抽屉视图控制器
     open var rightVC: UIViewController? {
         didSet {
-            removeOldVC(vc: oldValue)
-            setupRightVC(vc: rightVC)
+            remove(vc: oldValue)
+            setupRight(vc: rightVC)
         }
     }
     
     /// 左侧抽屉视图控制器
     open var leftVC: UIViewController? {
         didSet {
-            removeOldVC(vc: oldValue)
-            setupLeftVC(vc: leftVC)
+            remove(vc: oldValue)
+            setupLeft(vc: leftVC)
         }
     }
     
     /// 主视图在抽屉出现后的缩放比例
     open var mainScale: CGFloat = 1
     
+    var lastStatus: ZKDrawerStatus = .center
+
     open weak var delegate: ZKDrawerControllerDelegate?
     
     public convenience init(main: UIViewController, right: UIViewController) {
@@ -143,9 +142,9 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         self.rightVC = right
         self.leftVC = left
         
-        setupMainVC(vc: main)
-        setupLeftVC(vc: left)
-        setupRightVC(vc: right)
+        setupMain(vc: main)
+        setupLeft(vc: left)
+        setupRight(vc: right)
         
         mainCoverView = ZKDrawerCoverView()
         main.view.addSubview(mainCoverView)
@@ -190,7 +189,12 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
+    @available(iOS, deprecated: 1.0, message: "use setupLeft(vc: UIViewController) instead")
     func setupLeftVC(vc: UIViewController?) {
+        setupLeft(vc: vc)
+    }
+    
+    func setupLeft(vc: UIViewController?) {
         if let controller = vc {
             self.addChildViewController(controller)
         }
@@ -212,7 +216,12 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
+    @available(iOS, deprecated: 1.0, message: "use setupRight(vc: UIViewController) instead")
     func setupRightVC(vc: UIViewController?) {
+        setupRight(vc: vc)
+    }
+    
+    func setupRight(vc: UIViewController?) {
         if let controller = vc {
             self.addChildViewController(controller)
         }
@@ -229,13 +238,13 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
                 containerView.bringSubview(toFront: leftShadow)
                 containerView.bringSubview(toFront: rightShadow)
             }
-
+            
         } else {
             rightWidth = 0
         }
     }
     
-    func setupMainVC(vc: UIViewController) {
+    func setupMain(vc: UIViewController) {
         self.addChildViewController(vc)
         containerView.addSubview(vc.view)
         vc.view.snp.makeConstraints { (make) in
@@ -247,7 +256,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    func removeOldVC(vc: UIViewController?) {
+    
+    func remove(vc: UIViewController?) {
         vc?.view.snp.removeConstraints()
         vc?.view.removeFromSuperview()
         vc?.removeFromParentViewController()
@@ -259,28 +269,31 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
 
     /// 弹出预先设定好的抽屉ViewController
     ///
-    /// - Parameter animated: 是否有过度动画
+    /// - Parameter animated: 是否有过渡动画
     open func show(animated: Bool) {
         if let frame = rightVC?.view.frame ?? leftVC?.view.frame {
             self.containerView.scrollRectToVisible(frame, animated: animated)
         }
     }
     
+    @available(iOS, deprecated: 1.0, message: "use showLeft(vc: UIViewController, animated: Bool) instead")
+    open func showRightVC(_ vc: UIViewController, animated: Bool) {
+        showRight(vc: vc, animated: animated)
+    }
     
     /// 传入一个新的ViewController并从右侧弹出
     ///
     /// - Parameters:
     ///   - vc: ViewController
-    ///   - animated: 是否有过度动画
-    open func showRightVC(_ vc: UIViewController, animated: Bool) {
+    ///   - animated: 是否有过渡动画
+    open func showRight(vc: UIViewController, animated: Bool) {
         rightVC = vc
         show(animated: animated)
     }
     
-    
-    /// 隐藏右侧抽屉
+    /// 隐藏抽屉
     ///
-    /// - Parameter animated: 是否有过度动画
+    /// - Parameter animated: 是否有过渡动画
     open func hide(animated: Bool) {
         if #available(iOS 9.0, *) {
             self.containerView.setContentOffset(CGPoint.init(x: self.leftWidth, y: 0), animated: animated)
@@ -293,16 +306,20 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     }
     
 
+    @available(iOS, deprecated: 1.0, message: "use showLeft(vc: UIViewController, animated: Bool) instead")
+    open func showleftVC(_ vc: UIViewController, animated: Bool) {
+        showLeft(vc: vc, animated: animated)
+    }
+    
     /// 传入一个新的ViewController并从左侧弹出
     ///
     /// - Parameters:
     ///   - vc: ViewController
-    ///   - animated: 是否有过度动画
-    open func showleftVC(_ vc: UIViewController, animated: Bool) {
+    ///   - animated: 是否有过渡动画
+    open func showLeft(vc: UIViewController, animated: Bool) {
         leftVC = vc
         show(animated: animated)
     }
-    
 }
 
 extension ZKDrawerController: UIScrollViewDelegate {
@@ -348,7 +365,7 @@ extension ZKDrawerController: UIScrollViewDelegate {
         let width = scrollView.frame.size.width
         let offsetX = scrollView.contentOffset.x
         
-        /// 0 to 1 progress of the drawer showing
+        /// 0 to 1
         let progress: CGFloat = {
             if status == .left {
                 return (leftWidth - offsetX) / leftWidth
@@ -443,7 +460,7 @@ extension ZKDrawerController: UIScrollViewDelegate {
 
 extension ZKDrawerController {
 
-    var rightWidth:CGFloat {
+    var rightWidth: CGFloat {
         set {
             containerView.rightWidth = newValue
             mainVC.view.snp.updateConstraints { (update) in
@@ -519,6 +536,8 @@ extension ZKDrawerController {
         }
     }
     
+    
+    /// 当前状态
     open var status: ZKDrawerStatus {
         if containerView.contentOffset.x < leftWidth {
             return .left
