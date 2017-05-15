@@ -32,8 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         left.view.backgroundColor = UIColor.clear
         
         let drawer = ZKDrawerController.init(main: nav, right: right, left: left)
-        drawer.gestureRecognizerWidth = 300
-        drawer.defaultRightWidth = 700
+        drawer.gestureRecognizerWidth = 200
+        drawer.defaultRightWidth = 200
         drawer.mainScale = 0.8
         drawer.containerView.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         drawer.drawerStyle = .plain

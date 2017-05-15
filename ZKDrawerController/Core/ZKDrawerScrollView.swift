@@ -62,11 +62,14 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
             if point.x + self.frame.size.width > contentSize.width {
                 return true
             }
-            
         } else {
-            if point.x < leftWidth + gestureRecognizerWidth || point.x > contentSize.width - rightWidth - gestureRecognizerWidth {
-                return true
+            if let pan = gestureRecognizer as? UIPanGestureRecognizer {
+                let velocity = pan.velocity(in: self)
+                if (point.x < leftWidth + gestureRecognizerWidth && velocity.x > 0) || (point.x > contentSize.width - rightWidth - gestureRecognizerWidth && velocity.x < 0) {
+                    return true
+                }
             }
+
         }
         return false
     }
