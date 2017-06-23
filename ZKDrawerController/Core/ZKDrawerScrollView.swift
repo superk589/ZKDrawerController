@@ -39,12 +39,26 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var needAdjustContentOffset: Bool = true
+    private var needsAdjustContentOffset: Bool = true
+    private var adjustPosition: ZKDrawerControllerPosition = .center
+    
+    func setNeedsAdjustTo(_ position: ZKDrawerControllerPosition) {
+        needsAdjustContentOffset = true
+        adjustPosition = position
+    }
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
-        if needAdjustContentOffset {
-            self.contentOffset.x = leftWidth
-            needAdjustContentOffset = false
+        if needsAdjustContentOffset {
+            switch adjustPosition {
+            case .center:
+                contentOffset.x = leftWidth
+            case .right:
+                contentOffset.x = leftWidth + rightWidth
+            case .left:
+                contentOffset.x = 0
+            }
+            needsAdjustContentOffset = false
         }
     }
     

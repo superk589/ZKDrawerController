@@ -36,10 +36,10 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     func showLeft() {
-        drawerController.show(animated: true)
+        drawerController.show(.left, animated: true)
     }
     func showRight() {
-        drawerController.show(animated: true)
+        drawerController.show(.right, animated: true)
     }
     
     func push() {

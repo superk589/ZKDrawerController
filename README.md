@@ -23,12 +23,12 @@ let centerController = UIViewController()
 let leftController = UIViewController()
 let rightController = UIViewController()
 
-let drawerController = ZKDrawerController.init(main: centerController, right: rightController)
-let drawerController = ZKDrawerController.init(main: centerController, left: leftController)
-let drawerController = ZKDrawerController.init(main: centerController, right: rightController, left: leftController)
+let drawerController = ZKDrawerController.init(center: centerController, right: rightController)
+let drawerController = ZKDrawerController.init(center: centerController, left: leftController)
+let drawerController = ZKDrawerController.init(center: centerController, right: rightController, left: leftController)
 
 // have none of the two sides, and then add dynamically
-let drawerController = ZKDrawerController.init(main: centerController)
+let drawerController = ZKDrawerController.init(center: centerController)
 drawerController.rightVC = UIViewController()
 ```
 ### set drawer style
@@ -45,7 +45,8 @@ drawerController.drawerStyle = .plain
 
 ### show or hide side controller manually
 ```swift
-drawerController.show(animated: true)
+drawerController.show(.right, animated: true)
+drawerController.show(.left, animated: true)
 drawerController.hide(animated: true)
 ```
 
@@ -94,12 +95,12 @@ drawerController.shouldRequireFailureOfNavigationPopGesture = true
 ### set the side or main controller dynamically
 ```swift
 // set or replace
-drawerController.mainVC = newViewController
-drawerController.rightVC = newViewController
-drawerController.leftVC = newViewController
+drawerController.centerViewController = newViewController
+drawerController.rightViewController = newViewController
+drawerController.leftViewController = newViewController
 // remove the side view controller, mainVC can not be removed
-drawerController.rightVC = nil
-drawerController.leftVC = nil
+drawerController.rightViewController = nil
+drawerController.leftViewController = nil
 ```
 
 ### use ZKDrawerController as your root controller and show various main controller-based side controllers.
@@ -108,7 +109,7 @@ drawerController.leftVC = nil
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     let home = ViewController()
     let nav = UINavigationController(rootViewController: home)
-    let drawer = ZKDrawerController(main: nav, right: nil, left: nil)
+    let drawer = ZKDrawerController(center: nav, right: nil, left: nil)
     // do some setup
     drawer.mainScale = 0.8
     drawer.drawerStyle = .cover
@@ -124,11 +125,11 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 var drawerController: ZKDrawerController!
 override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    let rightVC = UIViewController()
-    drawerController.rightVC = rightVC
+    let vc = UIViewController()
+    drawerController.rightViewController = vc
 }
 override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    drawerController.rightVC = nil   
+    drawerController.rightViewController = nil   
 }
 ```

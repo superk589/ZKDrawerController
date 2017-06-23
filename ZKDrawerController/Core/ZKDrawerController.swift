@@ -17,7 +17,7 @@ public enum ZKDrawerCoverStyle {
     case insert
 }
 
-public enum ZKDrawerStatus {
+public enum ZKDrawerControllerPosition {
     case left
     case right
     case center
@@ -32,7 +32,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     open var defaultRightWidth: CGFloat = 300 {
         didSet {
-            if let view = rightVC?.view {
+            if let view = rightViewController?.view {
                 view.snp.updateConstraints({ (update) in
                     update.width.equalTo(defaultRightWidth)
                 })
@@ -43,7 +43,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     open var defaultLeftWidth: CGFloat = 300 {
         didSet {
-            if let view = leftVC?.view {
+            if let view = leftViewController?.view {
                 view.snp.updateConstraints({ (update) in
                     update.width.equalTo(defaultLeftWidth)
                 })
@@ -80,49 +80,60 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     }
     
     /// 主视图控制器
-    open var mainVC: UIViewController! {
+    open var centerViewController: UIViewController! {
         didSet {
             remove(vc: oldValue)
-            setupMain(vc: mainVC)
+            setupMainViewController(centerViewController)
         }
     }
     
     /// 右侧抽屉视图控制器
-    open var rightVC: UIViewController? {
+    open var rightViewController: UIViewController? {
         didSet {
             remove(vc: oldValue)
-            setupRight(vc: rightVC)
+            setupRightViewController(rightViewController)
         }
     }
     
     /// 左侧抽屉视图控制器
-    open var leftVC: UIViewController? {
+    open var leftViewController: UIViewController? {
         didSet {
             remove(vc: oldValue)
-            setupLeft(vc: leftVC)
+            setupLeftViewController(leftViewController)
+        }
+    }
+    
+    open func viewController(of position: ZKDrawerControllerPosition) -> UIViewController? {
+        switch position {
+        case .center:
+            return centerViewController
+        case .left:
+            return leftViewController
+        case .right:
+            return rightViewController
         }
     }
     
     /// 主视图在抽屉出现后的缩放比例
     open var mainScale: CGFloat = 1
     
-    var lastStatus: ZKDrawerStatus = .center
+    var lastPosition: ZKDrawerControllerPosition = .center
 
     open weak var delegate: ZKDrawerControllerDelegate?
     
     public convenience init(main: UIViewController, right: UIViewController) {
-        self.init(main: main, right: right, left: nil)
+        self.init(center: main, right: right, left: nil)
     }
     
     public convenience init(main: UIViewController, left: UIViewController) {
-        self.init(main: main, right: nil, left: left)
+        self.init(center: main, right: nil, left: left)
     }
     
     public convenience init(main: UIViewController) {
-        self.init(main: main, right: nil, left: nil)
+        self.init(center: main, right: nil, left: nil)
     }
     
-    init(main: UIViewController, right: UIViewController?, left: UIViewController?) {
+    init(center: UIViewController, right: UIViewController?, left: UIViewController?) {
         super.init(nibName: nil, bundle: nil)
         containerView = ZKDrawerScrollView()
         backgroundImageView = UIImageView()
@@ -135,31 +146,29 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         containerView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        self.addChildViewController(main)
         containerView.delegate = self
         
-        self.mainVC = main
-        self.rightVC = right
-        self.leftVC = left
+        centerViewController = center
+        rightViewController = right
+        leftViewController = left
         
-        setupMain(vc: main)
-        setupLeft(vc: left)
-        setupRight(vc: right)
+        setupMainViewController(center)
+        setupLeftViewController(left)
+        setupRightViewController(right)
         
         mainCoverView = ZKDrawerCoverView()
-        main.view.addSubview(mainCoverView)
+        center.view.addSubview(mainCoverView)
         mainCoverView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
         mainCoverView.alpha = 0
         mainCoverView.delegate = self
         
-        
         leftShadowView = ZKDrawerShadowView()
         leftShadowView.direction = .right
         containerView.addSubview(leftShadowView)
         leftShadowView.snp.makeConstraints { (make) in
-            make.right.equalTo(main.view)
+            make.right.equalTo(center.view)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(shadowWidth)
         }
@@ -167,7 +176,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         rightShadowView.direction = .left
         containerView.addSubview(rightShadowView)
         rightShadowView.snp.makeConstraints { (make) in
-            make.left.equalTo(main.view)
+            make.left.equalTo(center.view)
             make.top.bottom.equalToSuperview()
             make.width.equalTo(shadowWidth)
         }
@@ -179,6 +188,18 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        switch currentPosition {
+        case .right:
+            containerView.setNeedsAdjustTo(.right)
+        case .center:
+            containerView.setNeedsAdjustTo(.center)
+        default:
+            break
+        }
+    }
+  
     /// default true, 解决左侧抽屉划出手势和导航控制器手势冲突的问题
     open var shouldRequireFailureOfNavigationPopGesture: Bool {
         get {
@@ -189,78 +210,65 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    @available(iOS, deprecated: 1.0, message: "use setupLeft(vc: UIViewController) instead")
-    func setupLeftVC(vc: UIViewController?) {
-        setupLeft(vc: vc)
-    }
-    
-    func setupLeft(vc: UIViewController?) {
-        if let controller = vc {
-            self.addChildViewController(controller)
-        }
-        if let view = vc?.view {
-            containerView.addSubview(view)
-            view.snp.makeConstraints({ (make) in
-                make.top.left.bottom.equalToSuperview()
-                make.height.equalToSuperview()
-                make.width.equalTo(defaultLeftWidth)
-            })
-            leftWidth = defaultLeftWidth
-            containerView.needAdjustContentOffset = true
-            if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
-                containerView.bringSubview(toFront: leftShadow)
-                containerView.bringSubview(toFront: rightShadow)
-            }
-        } else {
+    private func setupLeftViewController(_ viewController: UIViewController?) {
+        guard let vc = viewController else {
             leftWidth = 0
+            return
         }
-    }
-    
-    @available(iOS, deprecated: 1.0, message: "use setupRight(vc: UIViewController) instead")
-    func setupRightVC(vc: UIViewController?) {
-        setupRight(vc: vc)
-    }
-    
-    func setupRight(vc: UIViewController?) {
-        if let controller = vc {
-            self.addChildViewController(controller)
-        }
-        if let view = vc?.view {
-            containerView.addSubview(view)
-            view.snp.makeConstraints({ (make) in
-                make.top.bottom.equalToSuperview()
-                make.left.equalTo(mainVC.view.snp.right)
-                make.height.equalToSuperview()
-                make.width.equalTo(defaultRightWidth)
-            })
-            rightWidth = defaultRightWidth
-            if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
-                containerView.bringSubview(toFront: leftShadow)
-                containerView.bringSubview(toFront: rightShadow)
-            }
-            
-        } else {
-            rightWidth = 0
-        }
-    }
-    
-    func setupMain(vc: UIViewController) {
-        self.addChildViewController(vc)
+        addChildViewController(vc)
         containerView.addSubview(vc.view)
-        vc.view.snp.makeConstraints { (make) in
+        vc.view.snp.makeConstraints({ (make) in
+            make.top.left.bottom.equalToSuperview()
+            make.height.equalToSuperview()
+            make.width.equalTo(defaultLeftWidth)
+        })
+        leftWidth = defaultLeftWidth
+        containerView.setNeedsAdjustTo(.center)
+        if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
+            containerView.bringSubview(toFront: leftShadow)
+            containerView.bringSubview(toFront: rightShadow)
+        }
+    }
+    
+    private func setupRightViewController(_ viewController: UIViewController?) {
+        guard let vc = viewController else {
+            rightWidth = 0
+            return
+        }
+        addChildViewController(vc)
+        containerView.addSubview(vc.view)
+        vc.view.snp.makeConstraints({ (make) in
+            make.top.bottom.equalToSuperview()
+            make.left.equalTo(centerViewController.view.snp.right)
+            make.height.equalToSuperview()
+            make.width.equalTo(defaultRightWidth)
+        })
+        rightWidth = defaultRightWidth
+        if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
+            containerView.bringSubview(toFront: leftShadow)
+            containerView.bringSubview(toFront: rightShadow)
+        }
+        vc.didMove(toParentViewController: self)
+    }
+    
+    private func setupMainViewController(_ viewController: UIViewController) {
+        addChildViewController(viewController)
+        containerView.addSubview(viewController.view)
+        viewController.view.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.height.equalToSuperview()
             make.left.equalTo(leftWidth)
             make.right.equalTo(-rightWidth)
             make.width.equalToSuperview()
         }
+        viewController.didMove(toParentViewController: self)
     }
     
-    
-    func remove(vc: UIViewController?) {
+    private func remove(vc: UIViewController?) {
         vc?.view.snp.removeConstraints()
         vc?.view.removeFromSuperview()
         vc?.removeFromParentViewController()
+        vc?.didMove(toParentViewController: nil)
     }
     
     func drawerCoverViewTapped(_ view: ZKDrawerCoverView) {
@@ -269,26 +277,28 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
 
     /// 弹出预先设定好的抽屉ViewController
     ///
-    /// - Parameter animated: 是否有过渡动画
-    open func show(animated: Bool) {
-        if let frame = rightVC?.view.frame ?? leftVC?.view.frame {
-            self.containerView.scrollRectToVisible(frame, animated: animated)
+    /// - Parameters:
+    ///   - position: 抽屉的位置，center代表隐藏两侧抽屉
+    ///   - animated: 是否有过渡动画
+    open func show(_ position: ZKDrawerControllerPosition, animated: Bool) {
+        switch position {
+        case .center:
+            hide(animated: animated)
+        case .left, .right:
+            if let frame = viewController(of: position)?.view.frame {
+                containerView.scrollRectToVisible(frame, animated: animated)
+            }
         }
-    }
-    
-    @available(iOS, deprecated: 1.0, message: "use showLeft(vc: UIViewController, animated: Bool) instead")
-    open func showRightVC(_ vc: UIViewController, animated: Bool) {
-        showRight(vc: vc, animated: animated)
     }
     
     /// 传入一个新的ViewController并从右侧弹出
     ///
     /// - Parameters:
-    ///   - vc: ViewController
+    ///   - viewController: ViewController
     ///   - animated: 是否有过渡动画
-    open func showRight(vc: UIViewController, animated: Bool) {
-        rightVC = vc
-        show(animated: animated)
+    open func showRight(_ viewController: UIViewController, animated: Bool) {
+        rightViewController = viewController
+        show(.right, animated: animated)
     }
     
     /// 隐藏抽屉
@@ -305,21 +315,16 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-
-    @available(iOS, deprecated: 1.0, message: "use showLeft(vc: UIViewController, animated: Bool) instead")
-    open func showleftVC(_ vc: UIViewController, animated: Bool) {
-        showLeft(vc: vc, animated: animated)
-    }
-    
     /// 传入一个新的ViewController并从左侧弹出
     ///
     /// - Parameters:
-    ///   - vc: ViewController
+    ///   - viewController: ViewController
     ///   - animated: 是否有过渡动画
-    open func showLeft(vc: UIViewController, animated: Bool) {
-        leftVC = vc
-        show(animated: animated)
+    open func showLeft(_ viewController: UIViewController, animated: Bool) {
+        leftViewController = viewController
+        show(.left, animated: animated)
     }
+
 }
 
 extension ZKDrawerController: UIScrollViewDelegate {
@@ -351,66 +356,67 @@ extension ZKDrawerController: UIScrollViewDelegate {
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if lastStatus == .center && lastStatus != status {
-            if let vc = rightVC ?? leftVC {
+        if lastPosition == .center && lastPosition != currentPosition {
+            if let vc = rightViewController ?? leftViewController {
                 delegate?.drawerController(self, willShow: vc)
             }
-        } else if lastStatus != .center && lastStatus != status {
-            if let vc = rightVC ?? leftVC {
+        } else if lastPosition != .center && lastPosition != currentPosition {
+            if let vc = rightViewController ?? leftViewController {
                 delegate?.drawerController(self, willShow: vc)
             }
         }
-        lastStatus = status
+        lastPosition = currentPosition
 
         let width = scrollView.frame.size.width
         let offsetX = scrollView.contentOffset.x
         
         /// 0 to 1
         let progress: CGFloat = {
-            if status == .left {
+            if currentPosition == .left {
                 return (leftWidth - offsetX) / leftWidth
-            } else if status == .right {
+            } else if currentPosition == .right {
                 return (width + rightWidth - scrollView.contentSize.width + offsetX) / rightWidth
             }
             return 0
         }()
         
         let scale: CGFloat = {
-            if status == .left || status == .right {
+            if currentPosition == .left || currentPosition == .right {
                 return 1 + progress * (mainScale - 1)
             } else {
                 return 1
             }
         }()
         
-        mainVC.view.transform = CGAffineTransform.init(scaleX: scale, y: scale)
+        let centerView = centerViewController.view!
+        centerView.transform = CGAffineTransform.init(scaleX: scale, y: scale)
         mainCoverView.alpha = progress
         containerView.endEditing(true)
         
-        if status == .left {
+        if currentPosition == .left {
             switch drawerStyle {
             case .plain:
-                mainVC.view.transform.tx = -(1 - scale) * width / 2
+                centerView.transform.tx = -(1 - scale) * width / 2
             case .cover:
-                mainVC.view.transform.tx = (1 - scale) * width / 2 - leftWidth * progress
+                centerView.transform.tx = (1 - scale) * width / 2 - leftWidth * progress
                 rightShadowView.alpha = progress
             case .insert:
                 leftShadowView.alpha = progress
-                mainVC.view.transform.tx = -(1 - scale) * width / 2
+                centerView.transform.tx = -(1 - scale) * width / 2
             }
-        } else if status == .right {
+        } else if currentPosition == .right {
             switch drawerStyle {
             case .plain:
-                mainVC.view.transform.tx = (1 - scale) * width / 2
+                centerView.transform.tx = (1 - scale) * width / 2
             case .cover:
-                mainVC.view.transform.tx = -(1 - scale) * width / 2 + rightWidth * progress
+                centerView.transform.tx = -(1 - scale) * width / 2 + rightWidth * progress
                 leftShadowView.alpha = progress
             case .insert:
                 rightShadowView.alpha = progress
-                mainVC.view.transform.tx = (1 - scale) * width / 2
+                centerView.transform.tx = (1 - scale) * width / 2
             }
         } else {
-            mainVC.view.transform.tx = 0
+            centerView.transform.tx = 0
             leftShadowView.alpha = 0
             rightShadowView.alpha = 0
         }
@@ -463,7 +469,7 @@ extension ZKDrawerController {
     var rightWidth: CGFloat {
         set {
             containerView.rightWidth = newValue
-            mainVC.view.snp.updateConstraints { (update) in
+            centerViewController.view.snp.updateConstraints { (update) in
                 update.right.equalTo(-newValue)
             }
         }
@@ -475,7 +481,7 @@ extension ZKDrawerController {
     var leftWidth: CGFloat {
         set {
             containerView.leftWidth = newValue
-            mainVC.view.snp.updateConstraints { (update) in
+            centerViewController.view.snp.updateConstraints { (update) in
                 update.left.equalTo(newValue)
             }
         }
@@ -496,12 +502,12 @@ extension ZKDrawerController {
                 rightShadowView.isHidden = false
                 leftShadowView.isHidden = false
                 leftShadowView.snp.remakeConstraints { (make) in
-                    make.right.equalTo(mainVC.view.snp.left)
+                    make.right.equalTo(centerViewController.view.snp.left)
                     make.top.bottom.equalToSuperview()
                     make.width.equalTo(shadowWidth)
                 }
                 rightShadowView.snp.remakeConstraints { (make) in
-                    make.left.equalTo(mainVC.view.snp.right)
+                    make.left.equalTo(centerViewController.view.snp.right)
                     make.top.bottom.equalToSuperview()
                     make.width.equalTo(shadowWidth)
                 }
@@ -510,12 +516,12 @@ extension ZKDrawerController {
                 leftShadowView.isHidden = false
                 
                 leftShadowView.snp.remakeConstraints { (make) in
-                    make.right.equalTo(mainVC.view)
+                    make.right.equalTo(centerViewController.view)
                     make.top.bottom.equalToSuperview()
                     make.width.equalTo(shadowWidth)
                 }
                 rightShadowView.snp.remakeConstraints { (make) in
-                    make.left.equalTo(mainVC.view)
+                    make.left.equalTo(centerViewController.view)
                     make.top.bottom.equalToSuperview()
                     make.width.equalTo(shadowWidth)
                 }
@@ -538,7 +544,7 @@ extension ZKDrawerController {
     
     
     /// 当前状态
-    open var status: ZKDrawerStatus {
+    open var currentPosition: ZKDrawerControllerPosition {
         if containerView.contentOffset.x < leftWidth {
             return .left
         } else if containerView.contentOffset.x > leftWidth {
