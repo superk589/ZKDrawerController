@@ -30,6 +30,14 @@ public protocol ZKDrawerControllerDelegate: class {
 
 open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
+    override open var childViewControllerForStatusBarHidden: UIViewController? {
+        return centerViewController
+    }
+    
+    open override var childViewControllerForStatusBarStyle: UIViewController? {
+        return centerViewController
+    }
+    
     open var defaultRightWidth: CGFloat = 300 {
         didSet {
             if let view = rightViewController?.view {
