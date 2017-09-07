@@ -1,12 +1,40 @@
 # ZKDrawerController
-![Swift3](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat")
+![Swift4](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)
 [![Version](https://img.shields.io/cocoapods/v/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)
 [![License](https://img.shields.io/cocoapods/l/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)
 [![Platform](https://img.shields.io/cocoapods/p/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)  
 
 An iOS drawer controller in swift
 
-## CocoaPods:
+## Installation
+
+### CocoaPods:
+ZKDrawerController 0.3.0+ is written in Swift 4.0 and have dependencies written in Swift 3.2. CocoaPods cannot manage multi-versions right now. If you want to use 0.3.0+, please use Carthage or integrate manually.
+<!-- ### CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+To integrate ZKPageViewController into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/superk589/ZKPageViewController.git'
+platform :ios, '9.0'
+use_frameworks!
+
+target 'YourApp' do
+    pod 'ZKPageViewController'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+``` -->
+
 ```
 platform :ios, '8.0'
 use_frameworks!
@@ -14,6 +42,30 @@ target 'myApp' do
   pod 'ZKDrawerController'
 end
 ```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate ZKPageViewController into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```ogdl
+github "superk589/ZKDrawerController"
+```
+
+Run `carthage update` to build the framework and drag the built `ZKDrawerController.framework` into your Xcode project.
+
+### Manually
+
+If you prefer not to use either of the aforementioned dependency managers, you can integrate ZKDrawerController into your project manually.
+
 
 ## Usage
 
