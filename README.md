@@ -6,26 +6,29 @@
 
 An iOS drawer controller in swift
 
+## Requirements
+* Xcode 9.0+
+* Swift 4.0+
+* iOS Deployment Target 8.0+
+
 ## Installation
 
-### CocoaPods:
-ZKDrawerController 0.3.0+ is written in Swift 4.0 and have dependencies written in Swift 3.2. CocoaPods cannot manage multi-versions right now. If you want to use 0.3.0+, please use Carthage or integrate manually.
-<!-- ### CocoaPods
+### CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
 
 ```bash
 $ gem install cocoapods
 ```
-To integrate ZKPageViewController into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate ZKDrawerController into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-source 'https://github.com/superk589/ZKPageViewController.git'
+source 'https://github.com/superk589/ZKDrawerController.git'
 platform :ios, '9.0'
 use_frameworks!
 
 target 'YourApp' do
-    pod 'ZKPageViewController'
+    pod 'ZKDrawerController'
 end
 ```
 
@@ -33,14 +36,6 @@ Then, run the following command:
 
 ```bash
 $ pod install
-``` -->
-
-```
-platform :ios, '8.0'
-use_frameworks!
-target 'myApp' do
-  pod 'ZKDrawerController'
-end
 ```
 
 ### Carthage
