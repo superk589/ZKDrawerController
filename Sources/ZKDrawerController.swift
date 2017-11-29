@@ -89,6 +89,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 主视图蒙层
     open var mainCoverView: ZKDrawerCoverView!
     
+    private var isTransitioning = false
+    
     /// 阴影视图的宽度
     open var shadowWidth: CGFloat = 5 {
         didSet {
@@ -213,8 +215,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         let position = currentPosition
-        let color = mainCoverView.backgroundColor
-        self.mainCoverView.backgroundColor = .clear
+        isTransitioning = true
         coordinator.animate(alongsideTransition: { (context) in
             switch position {
             case .right:
@@ -228,7 +229,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             self.containerView.layoutIfNeeded()
             
         }, completion: { finished in
-            self.mainCoverView.backgroundColor = color
+            self.isTransitioning = false
         })
         
     }
@@ -399,6 +400,7 @@ extension ZKDrawerController: UIScrollViewDelegate {
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isTransitioning { return }
         if lastPosition == .center && lastPosition != currentPosition {
             if let vc = rightViewController ?? leftViewController {
                 delegate?.drawerController(self, willShow: vc)
