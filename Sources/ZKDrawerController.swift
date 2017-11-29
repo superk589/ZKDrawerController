@@ -212,14 +212,25 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        switch currentPosition {
-        case .right:
-            containerView.setNeedsAdjustTo(.right)
-        case .center:
-            containerView.setNeedsAdjustTo(.center)
-        default:
-            break
-        }
+        let position = currentPosition
+        let color = mainCoverView.backgroundColor
+        self.mainCoverView.backgroundColor = .clear
+        coordinator.animate(alongsideTransition: { (context) in
+            switch position {
+            case .right:
+                self.containerView.setNeedsAdjustTo(.right)
+            case .center:
+                self.containerView.setNeedsAdjustTo(.center)
+            default:
+                break
+            }
+            self.containerView.setNeedsLayout()
+            self.containerView.layoutIfNeeded()
+            
+        }, completion: { finished in
+            self.mainCoverView.backgroundColor = color
+        })
+        
     }
   
     /// default true, 解决左侧抽屉划出手势和导航控制器手势冲突的问题
