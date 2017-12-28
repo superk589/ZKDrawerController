@@ -400,17 +400,28 @@ extension ZKDrawerController: UIScrollViewDelegate {
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // if on rotating transition, do nothing
         if isTransitioning { return }
-        if lastPosition == .center && lastPosition != currentPosition {
-            if let vc = rightViewController ?? leftViewController {
+        
+        // notify willShow to delegate
+        if lastPosition != currentPosition && currentPosition != .center {
+            if let vc = rightViewController, currentPosition == .right {
                 delegate?.drawerController(self, willShow: vc)
-            }
-        } else if lastPosition != .center && lastPosition != currentPosition {
-            if let vc = rightViewController ?? leftViewController {
+            } else if let vc = leftViewController, currentPosition == .left {
                 delegate?.drawerController(self, willShow: vc)
             }
         }
         lastPosition = currentPosition
+        
+//        if lastPosition == .center && lastPosition != currentPosition {
+//            if let vc = rightViewController ?? leftViewController {
+//                delegate?.drawerController(self, willShow: vc)
+//            }
+//        } else if lastPosition != .center && lastPosition != currentPosition {
+//            if let vc = rightViewController ?? leftViewController {
+//                delegate?.drawerController(self, willShow: vc)
+//            }
+//        }
 
         let width = scrollView.frame.size.width
         let offsetX = scrollView.contentOffset.x
@@ -436,6 +447,13 @@ extension ZKDrawerController: UIScrollViewDelegate {
         let centerView = centerViewController.view!
         centerView.transform = CGAffineTransform.init(scaleX: scale, y: scale)
         mainCoverView.alpha = progress
+        if progress == 0 {
+            centerView.sendSubview(toBack: mainCoverView)
+        } else {
+            centerView.bringSubview(toFront: mainCoverView)
+        }
+        
+        // hide keyboard
         containerView.endEditing(true)
         
         if currentPosition == .left {
