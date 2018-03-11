@@ -142,7 +142,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     open var mainScale: CGFloat = 1
     
     var lastPosition: ZKDrawerControllerPosition = .center
-
+    
     open weak var delegate: ZKDrawerControllerDelegate?
     
     public convenience init(main: UIViewController, right: UIViewController) {
@@ -227,13 +227,13 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             }
             self.containerView.setNeedsLayout()
             self.containerView.layoutIfNeeded()
-            
+            self.updateTransforms()
         }, completion: { finished in
             self.isTransitioning = false
         })
         
     }
-  
+    
     /// default true, 解决左侧抽屉划出手势和导航控制器手势冲突的问题
     open var shouldRequireFailureOfNavigationPopGesture: Bool {
         get {
@@ -308,7 +308,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     func drawerCoverViewTapped(_ view: ZKDrawerCoverView) {
         hide(animated: true)
     }
-
+    
     /// 弹出预先设定好的抽屉ViewController
     ///
     /// - Parameters:
@@ -358,7 +358,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         leftViewController = viewController
         show(.left, animated: animated)
     }
-
+    
 }
 
 extension ZKDrawerController: UIScrollViewDelegate {
@@ -399,63 +399,38 @@ extension ZKDrawerController: UIScrollViewDelegate {
         
     }
     
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // if on rotating transition, do nothing
-        if isTransitioning { return }
+    private var progress: CGFloat {
+        let width = containerView.frame.size.width
+        let offsetX = containerView.contentOffset.x
         
-        // notify willShow to delegate
-        if lastPosition != currentPosition && currentPosition != .center {
-            if let vc = rightViewController, currentPosition == .right {
-                delegate?.drawerController(self, willShow: vc)
-            } else if let vc = leftViewController, currentPosition == .left {
-                delegate?.drawerController(self, willShow: vc)
-            }
+        if currentPosition == .left {
+            return (leftWidth - offsetX) / leftWidth
+        } else if currentPosition == .right {
+            return (width + rightWidth - containerView.contentSize.width + offsetX) / rightWidth
         }
-        lastPosition = currentPosition
-        
-//        if lastPosition == .center && lastPosition != currentPosition {
-//            if let vc = rightViewController ?? leftViewController {
-//                delegate?.drawerController(self, willShow: vc)
-//            }
-//        } else if lastPosition != .center && lastPosition != currentPosition {
-//            if let vc = rightViewController ?? leftViewController {
-//                delegate?.drawerController(self, willShow: vc)
-//            }
-//        }
-
-        let width = scrollView.frame.size.width
-        let offsetX = scrollView.contentOffset.x
-        
-        /// 0 to 1
-        let progress: CGFloat = {
-            if currentPosition == .left {
-                return (leftWidth - offsetX) / leftWidth
-            } else if currentPosition == .right {
-                return (width + rightWidth - scrollView.contentSize.width + offsetX) / rightWidth
-            }
-            return 0
-        }()
-        
-        let scale: CGFloat = {
-            if currentPosition == .left || currentPosition == .right {
-                return 1 + progress * (mainScale - 1)
-            } else {
-                return 1
-            }
-        }()
-        
+        return 0
+    }
+    
+    private var scale: CGFloat {
+        if currentPosition == .left || currentPosition == .right {
+            return 1 + progress * (mainScale - 1)
+        } else {
+            return 1
+        }
+    }
+    
+    private func updateTransforms() {
+        let width = containerView.frame.size.width
+        let progress = self.progress
+        let scale = self.scale
         let centerView = centerViewController.view!
-        centerView.transform = CGAffineTransform.init(scaleX: scale, y: scale)
+        centerView.transform = CGAffineTransform(scaleX: scale, y: scale)
         mainCoverView.alpha = progress
         if progress == 0 {
             centerView.sendSubview(toBack: mainCoverView)
         } else {
             centerView.bringSubview(toFront: mainCoverView)
         }
-        
-        // hide keyboard
-        containerView.endEditing(true)
-        
         if currentPosition == .left {
             switch drawerStyle {
             case .plain:
@@ -483,11 +458,33 @@ extension ZKDrawerController: UIScrollViewDelegate {
             leftShadowView.alpha = 0
             rightShadowView.alpha = 0
         }
+        
+    }
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // if on rotating transition, do nothing
+        if isTransitioning { return }
+        
+        // notify willShow to delegate
+        if lastPosition != currentPosition && currentPosition != .center {
+            if let vc = rightViewController, currentPosition == .right {
+                delegate?.drawerController(self, willShow: vc)
+            } else if let vc = leftViewController, currentPosition == .left {
+                delegate?.drawerController(self, willShow: vc)
+            }
+        }
+        lastPosition = currentPosition
+        
+        // hide keyboard
+        containerView.endEditing(true)
+        
+        updateTransforms()
+        
     }
 }
 
 extension ZKDrawerController {
-
+    
     var rightWidth: CGFloat {
         set {
             containerView.rightWidth = newValue
