@@ -222,8 +222,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
                 self.containerView.setNeedsAdjustTo(.right)
             case .center:
                 self.containerView.setNeedsAdjustTo(.center)
-            default:
-                break
+            case .left:
+                self.containerView.setNeedsAdjustTo(.left)
             }
             self.containerView.setNeedsLayout()
             self.containerView.layoutIfNeeded()
