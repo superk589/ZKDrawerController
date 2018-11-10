@@ -8,21 +8,6 @@
 import UIKit
 import SnapKit
 
-public enum ZKDrawerCoverStyle {
-    /// 水平平铺 无阴影
-    case plain
-    /// 上方覆盖 抽屉视图外边缘有阴影
-    case cover
-    /// 下方插入 主视图外边缘有阴影
-    case insert
-}
-
-public enum ZKDrawerControllerPosition {
-    case left
-    case right
-    case center
-}
-
 public protocol ZKDrawerControllerDelegate: class {
     func drawerController(_ drawerVC: ZKDrawerController, willShow vc: UIViewController)
     func drawerController(_ drawerVC: ZKDrawerController, didHide vc: UIViewController)
@@ -44,11 +29,26 @@ public extension UIViewController {
 
 open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
-    override open var childViewControllerForStatusBarHidden: UIViewController? {
+    public enum Style {
+        /// 水平平铺 无阴影
+        case plain
+        /// 上方覆盖 抽屉视图外边缘有阴影
+        case cover
+        /// 下方插入 主视图外边缘有阴影
+        case insert
+    }
+    
+    public enum Position {
+        case left
+        case right
+        case center
+    }
+    
+    override open var childForStatusBarHidden: UIViewController? {
         return centerViewController
     }
     
-    open override var childViewControllerForStatusBarStyle: UIViewController? {
+    open override var childForStatusBarStyle: UIViewController? {
         return centerViewController
     }
     
@@ -127,7 +127,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    open func viewController(of position: ZKDrawerControllerPosition) -> UIViewController? {
+    open func viewController(of position: Position) -> UIViewController? {
         switch position {
         case .center:
             return centerViewController
@@ -141,7 +141,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// 主视图在抽屉出现后的缩放比例
     open var mainScale: CGFloat = 1
     
-    var lastPosition: ZKDrawerControllerPosition = .center
+    var lastPosition: Position = .center
     
     open weak var delegate: ZKDrawerControllerDelegate?
     
@@ -249,7 +249,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             leftWidth = 0
             return
         }
-        addChildViewController(vc)
+        addChild(vc)
         containerView.addSubview(vc.view)
         vc.view.snp.makeConstraints({ (make) in
             make.top.left.bottom.equalToSuperview()
@@ -259,8 +259,8 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         leftWidth = defaultLeftWidth
         containerView.setNeedsAdjustTo(.center)
         if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
-            containerView.bringSubview(toFront: leftShadow)
-            containerView.bringSubview(toFront: rightShadow)
+            containerView.bringSubviewToFront(leftShadow)
+            containerView.bringSubviewToFront(rightShadow)
         }
     }
     
@@ -269,7 +269,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             rightWidth = 0
             return
         }
-        addChildViewController(vc)
+        addChild(vc)
         containerView.addSubview(vc.view)
         vc.view.snp.makeConstraints({ (make) in
             make.top.bottom.equalToSuperview()
@@ -279,14 +279,14 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         })
         rightWidth = defaultRightWidth
         if let leftShadow = leftShadowView, let rightShadow = rightShadowView {
-            containerView.bringSubview(toFront: leftShadow)
-            containerView.bringSubview(toFront: rightShadow)
+            containerView.bringSubviewToFront(leftShadow)
+            containerView.bringSubviewToFront(rightShadow)
         }
-        vc.didMove(toParentViewController: self)
+        vc.didMove(toParent: self)
     }
     
     private func setupMainViewController(_ viewController: UIViewController) {
-        addChildViewController(viewController)
+        addChild(viewController)
         containerView.addSubview(viewController.view)
         viewController.view.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
@@ -295,14 +295,14 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
             make.right.equalTo(-rightWidth)
             make.width.equalToSuperview()
         }
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
     }
     
     private func remove(vc: UIViewController?) {
         vc?.view.snp.removeConstraints()
         vc?.view.removeFromSuperview()
-        vc?.removeFromParentViewController()
-        vc?.didMove(toParentViewController: nil)
+        vc?.removeFromParent()
+        vc?.didMove(toParent: nil)
     }
     
     func drawerCoverViewTapped(_ view: ZKDrawerCoverView) {
@@ -314,7 +314,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     /// - Parameters:
     ///   - position: 抽屉的位置，center代表隐藏两侧抽屉
     ///   - animated: 是否有过渡动画
-    open func show(_ position: ZKDrawerControllerPosition, animated: Bool) {
+    open func show(_ position: Position, animated: Bool) {
         switch position {
         case .center:
             hide(animated: animated)
@@ -427,9 +427,9 @@ extension ZKDrawerController: UIScrollViewDelegate {
         centerView.transform = CGAffineTransform(scaleX: scale, y: scale)
         mainCoverView.alpha = progress
         if progress == 0 {
-            centerView.sendSubview(toBack: mainCoverView)
+            centerView.sendSubviewToBack(mainCoverView)
         } else {
-            centerView.bringSubview(toFront: mainCoverView)
+            centerView.bringSubviewToFront(mainCoverView)
         }
         if currentPosition == .left {
             switch drawerStyle {
@@ -510,7 +510,7 @@ extension ZKDrawerController {
     }
     
     /// 抽屉风格
-    open var drawerStyle: ZKDrawerCoverStyle {
+    open var drawerStyle: Style {
         set {
             containerView.drawerStyle = newValue
             switch newValue {
@@ -563,7 +563,7 @@ extension ZKDrawerController {
     
     
     /// 当前状态
-    open var currentPosition: ZKDrawerControllerPosition {
+    open var currentPosition: Position {
         if containerView.contentOffset.x < leftWidth {
             return .left
         } else if containerView.contentOffset.x > leftWidth {

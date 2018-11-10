@@ -8,14 +8,14 @@
 
 import UIKit
 
-enum ZKDrawerShadowDirection {
-    case left
-    case right
-}
-
 class ZKDrawerShadowView: UIView {
+    
+    enum Direction {
+        case left
+        case right
+    }
 
-    var direction: ZKDrawerShadowDirection = .left
+    var direction: Direction = .left
     
     override init(frame: CGRect) {
         super.init(frame: frame)

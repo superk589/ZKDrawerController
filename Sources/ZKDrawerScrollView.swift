@@ -17,7 +17,7 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
     
     var mainScale: CGFloat = 1
     
-    var drawerStyle: ZKDrawerCoverStyle = .cover
+    var drawerStyle: ZKDrawerController.Style = .cover
     
     var gestureRecognizerWidth:CGFloat = 40
     
@@ -30,7 +30,7 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         self.showsHorizontalScrollIndicator = false
         self.bounces = false
         // use custom paging behavior instead
-        self.decelerationRate = UIScrollViewDecelerationRateFast
+        self.decelerationRate = UIScrollView.DecelerationRate.fast
 //        self.isPagingEnabled = true
         self.panGestureRecognizer.delegate = self
     }
@@ -40,9 +40,9 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
     }
     
     private var needsAdjustContentOffset: Bool = true
-    private var adjustPosition: ZKDrawerControllerPosition = .center
+    private var adjustPosition: ZKDrawerController.Position = .center
     
-    func setNeedsAdjustTo(_ position: ZKDrawerControllerPosition) {
+    func setNeedsAdjustTo(_ position: ZKDrawerController.Position) {
         needsAdjustContentOffset = true
         adjustPosition = position
     }
