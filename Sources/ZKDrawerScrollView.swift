@@ -26,13 +26,16 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
     public override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.backgroundColor = UIColor.clear
-        self.showsHorizontalScrollIndicator = false
-        self.bounces = false
+        if #available(iOS 11.0, *) {
+            contentInsetAdjustmentBehavior = .never
+        }
+        backgroundColor = UIColor.clear
+        showsHorizontalScrollIndicator = false
+        bounces = false
         // use custom paging behavior instead
-        self.decelerationRate = UIScrollView.DecelerationRate.fast
-//        self.isPagingEnabled = true
-        self.panGestureRecognizer.delegate = self
+        decelerationRate = UIScrollView.DecelerationRate.fast
+        panGestureRecognizer.delegate = self
+        scrollsToTop = false
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -68,12 +71,12 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         
         if self.contentOffset.x == 0 && leftWidth > 0 {
             //当偏移量为0时（左侧菜单完全展示）
-            if point.x < self.frame.size.width {
+            if point.x < frame.size.width {
                 return true
             }
-        } else if self.contentOffset.x == contentSize.width - self.frame.size.width && rightWidth > 0 {
+        } else if self.contentOffset.x == contentSize.width - frame.size.width && rightWidth > 0 {
             //当偏移量为contentSize.width时（右侧菜单完全展示）
-            if point.x + self.frame.size.width > contentSize.width {
+            if point.x + frame.size.width > contentSize.width {
                 return true
             }
         } else {
@@ -96,11 +99,4 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         }
     }
     
-    
-//    public override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-//        super.setContentOffset(contentOffset, animated: animated)
-//        if animated && contentOffset != self.contentOffset {
-//            self.isUserInteractionEnabled = false 
-//        }
-//    }
 }
