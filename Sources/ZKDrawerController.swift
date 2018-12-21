@@ -244,6 +244,24 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
+    open var shouldRequireFailureOfaGestures: [UIGestureRecognizer] {
+        get {
+            return containerView.shouldRequireFailureOfaGestures
+        }
+        set {
+            containerView.shouldRequireFailureOfaGestures = newValue
+        }
+    }
+    
+    open var shouldBeRequiredToFailGestures: [UIGestureRecognizer] {
+        get {
+            return containerView.shouldBeRequiredToFailGestures
+        }
+        set {
+            containerView.shouldBeRequiredToFailGestures = newValue
+        }
+    }
+    
     private func setupLeftViewController(_ viewController: UIViewController?) {
         guard let vc = viewController else {
             leftWidth = 0
