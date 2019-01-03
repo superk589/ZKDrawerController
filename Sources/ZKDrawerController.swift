@@ -30,11 +30,14 @@ public extension UIViewController {
 open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     public enum Style {
-        /// 水平平铺 无阴影
+        
+        /// side controller covers the main controller, shadows the edge of side controllers' view
         case plain
-        /// 上方覆盖 抽屉视图外边缘有阴影
+        
+        /// side controller inserts below the main controller, shadows the edge of main controller's view
         case cover
-        /// 下方插入 主视图外边缘有阴影
+        
+        /// side controller lays beside the main controller
         case insert
     }
     
@@ -145,19 +148,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
     
     open weak var delegate: ZKDrawerControllerDelegate?
     
-    public convenience init(main: UIViewController, right: UIViewController) {
-        self.init(center: main, right: right, left: nil)
-    }
-    
-    public convenience init(main: UIViewController, left: UIViewController) {
-        self.init(center: main, right: nil, left: left)
-    }
-    
-    public convenience init(main: UIViewController) {
-        self.init(center: main, right: nil, left: nil)
-    }
-    
-    public init(center: UIViewController, right: UIViewController?, left: UIViewController?) {
+    public init(center: UIViewController, right: UIViewController? = nil, left: UIViewController? = nil) {
         super.init(nibName: nil, bundle: nil)
         containerView = ZKDrawerScrollView()
         backgroundImageView = UIImageView()
@@ -234,7 +225,7 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         
     }
     
-    /// default true, 解决左侧抽屉划出手势和导航控制器手势冲突的问题
+    /// default true, set navigation pop gesture's priority higher than drawer controller's gesture
     open var shouldRequireFailureOfNavigationPopGesture: Bool {
         get {
             return containerView.shouldRequireFailureOfNavigationPopGesture
@@ -244,21 +235,23 @@ open class ZKDrawerController: UIViewController, ZKDrawerCoverViewDelegate {
         }
     }
     
-    open var shouldRequireFailureOfaGestures: [UIGestureRecognizer] {
+    /// gestures those have higher priority than drawer controller's gesture
+    open var higherPriorityGestures: [UIGestureRecognizer] {
         get {
-            return containerView.shouldRequireFailureOfaGestures
+            return containerView.higherPriorityGestures
         }
         set {
-            containerView.shouldRequireFailureOfaGestures = newValue
+            containerView.higherPriorityGestures = newValue
         }
     }
     
-    open var shouldBeRequiredToFailGestures: [UIGestureRecognizer] {
+    /// gestures those have lower priority than drawer controller's gesture
+    open var lowerPriorityGestures: [UIGestureRecognizer] {
         get {
-            return containerView.shouldBeRequiredToFailGestures
+            return containerView.lowerPriorityGestures
         }
         set {
-            containerView.shouldBeRequiredToFailGestures = newValue
+            containerView.lowerPriorityGestures = newValue
         }
     }
     

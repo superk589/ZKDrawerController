@@ -91,21 +91,21 @@ public class ZKDrawerScrollView: UIScrollView, UIGestureRecognizerDelegate {
         return false
     }
     
-    var shouldRequireFailureOfaGestures: [UIGestureRecognizer] = []
+    var higherPriorityGestures: [UIGestureRecognizer] = []
     
-    var shouldBeRequiredToFailGestures: [UIGestureRecognizer] = []
+    var lowerPriorityGestures: [UIGestureRecognizer] = []
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if otherGestureRecognizer is UIScreenEdgePanGestureRecognizer {
             return shouldRequireFailureOfNavigationPopGesture
         } else {
-            return shouldRequireFailureOfaGestures.contains(otherGestureRecognizer)
+            return higherPriorityGestures.contains(otherGestureRecognizer)
         }
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        return shouldBeRequiredToFailGestures.contains(otherGestureRecognizer)
+        return lowerPriorityGestures.contains(otherGestureRecognizer)
     }
     
 }

@@ -8,7 +8,7 @@ An iOS drawer controller in swift
 
 ## Requirements
 * Xcode 9.0+
-* Swift 4.0+
+* Swift 4.2+
 * iOS Deployment Target 8.0+
 
 ## Installation
@@ -24,7 +24,7 @@ To integrate ZKDrawerController into your Xcode project using CocoaPods, specify
 
 ```ruby
 source 'https://github.com/superk589/ZKDrawerController.git'
-platform :ios, '9.0'
+platform :ios, '8.0'
 use_frameworks!
 
 target 'YourApp' do
@@ -70,12 +70,12 @@ let centerController = UIViewController()
 let leftController = UIViewController()
 let rightController = UIViewController()
 
-let drawerController = ZKDrawerController.init(main: centerController, right: rightController)
-let drawerController = ZKDrawerController.init(main: centerController, left: leftController)
-let drawerController = ZKDrawerController.init(center: centerController, right: rightController, left: leftController)
+let drawerController = ZKDrawerController(center: centerController, right: rightController)
+let drawerController = ZKDrawerController(center: centerController, left: leftController)
+let drawerController = ZKDrawerController(center: centerController, right: rightController, left: leftController)
 
 // have none of the two sides, and then add dynamically
-let drawerController = ZKDrawerController.init(main: centerController)
+let drawerController = ZKDrawerController(center: centerController)
 drawerController.rightViewController = UIViewController()
 ```
 ### set drawer style
@@ -137,6 +137,12 @@ drawerController.gestureRecognizerWidth = 40
 ### should require failure of navigation pop gesture, default true (if setting false, showing left drawer gesture will have higher priority)
 ```swift
 drawerController.shouldRequireFailureOfNavigationPopGesture = true
+```
+
+### setup gestures priority, higher priority gestures will proc before drawer controller's gesture and lower priority gestures will proc after failure of drawer controller's gesture
+```swift
+drawerController.higherPriorityGestures = [gesture1, gesture2]
+drawerController.lowerPriorityGestures = [gesture3, gesture4]
 ```
 
 ### set the side or main controller dynamically
