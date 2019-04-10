@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ZKDrawerController"
-  s.version      = "0.5.0"
+  s.version      = "0.6.0"
   s.summary      = "An iOS drawer controller in swift."
   s.description  = <<-DESC
                    A light-weighted iOS drawer controller in swift.
@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
   s.source_files  = "Sources/*.swift"
   s.framework  = "UIKit"
   s.dependency "SnapKit"
+  s.swift_version = "5.0"
 end

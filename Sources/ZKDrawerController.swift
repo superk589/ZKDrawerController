@@ -14,7 +14,7 @@ public protocol ZKDrawerControllerDelegate: class {
 }
 
 public extension UIViewController {
-    public var drawerController: ZKDrawerController? {
+    var drawerController: ZKDrawerController? {
         var vc = parent
         while vc != nil {
             if vc is ZKDrawerController {
