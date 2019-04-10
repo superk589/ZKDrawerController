@@ -1,5 +1,5 @@
 # ZKDrawerController
-![Swift4](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)
+![Swift5](https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat)
 [![Version](https://img.shields.io/cocoapods/v/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)
 [![License](https://img.shields.io/cocoapods/l/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)
 [![Platform](https://img.shields.io/cocoapods/p/ZKDrawerController.svg?style=flat)](http://cocoapods.org/pods/ZKDrawerController)  
@@ -7,8 +7,8 @@
 An iOS drawer controller in swift
 
 ## Requirements
-* Xcode 9.0+
-* Swift 4.2+
+* Xcode 10.2+
+* Swift 5.0+
 * iOS Deployment Target 8.0+
 
 ## Installation
