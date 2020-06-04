@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/superk589/ZKDrawerController"
   s.license      = "MIT"
   s.author             = { "zhenkai zhao" => "superk589@gmail.com" }
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "10.0"
   s.source       = { :git => "https://github.com/superk589/ZKDrawerController.git", :tag => "#{s.version}" }
   s.source_files  = "Sources/*.swift"
   s.framework  = "UIKit"

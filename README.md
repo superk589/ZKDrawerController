@@ -9,7 +9,7 @@ An iOS drawer controller in swift
 ## Requirements
 * Xcode 10.2+
 * Swift 5.0+
-* iOS Deployment Target 8.0+
+* iOS Deployment Target 10.0+
 
 ## Installation
 
@@ -49,13 +49,24 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate ZKPageViewController into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate ZKDrawerController into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
 github "superk589/ZKDrawerController"
 ```
 
 Run `carthage update` to build the framework and drag the built `ZKDrawerController.framework` into your Xcode project.
+
+### Swift Package Manager
+
+Declare ZKDrawerController as a package dependency.
+```swift
+.package(
+    name: "ZKDrawerController", 
+    url: "https://github.com/superk589/ZKDrawerController", 
+    .upToNextMinor(from: "0.6.1")),
+```
+
 
 ### Manually
 
@@ -64,7 +75,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 
 ## Usage
 
-### initialize
+### Initialize
 ```swift
 let centerController = UIViewController()
 let leftController = UIViewController()
@@ -78,7 +89,7 @@ let drawerController = ZKDrawerController(center: centerController, right: right
 let drawerController = ZKDrawerController(center: centerController)
 drawerController.rightViewController = UIViewController()
 ```
-### set drawer style
+### Set drawer style
 ```swift
 // side controller covers the main controller, shadows the edge of side controllers' view
 drawerController.drawerStyle = .cover
@@ -90,20 +101,20 @@ drawerController.drawerStyle = .insert
 drawerController.drawerStyle = .plain
 ```
 
-### show or hide side controller manually
+### Show or hide side controller manually
 ```swift
 drawerController.show(.right, animated: true)
 drawerController.show(.left, animated: true)
 drawerController.hide(animated: true)
 ```
 
-### set main controller's scale
+### Set main controller's scale
 ```swift
 // scale should be 0 to 1
 drawerController.mainScale = 0.8
 ```
 
-### set background color or image
+### Set background color or image
 ```swift
 // set background color
 drawerController.containerView.backgroundColor = UIColor.white
@@ -112,40 +123,42 @@ drawerController.containerView.backgroundColor = UIColor.white
 drawerController.backgroundImageView.image = image
 ```
 
-### set center controller's view foreground color while side view is showing
+### Set center controller's view foreground color while side view is showing
 ```swift
 // this view will change it's alpha while side view is showing from 0 to 1
 drawerController.mainCoverView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
 ```
 
-### set left and right side width
+### Set left and right side width
 ```swift
 drawerController.defaultRightWidth = 300
 drawerController.defaultLeftWidth = 300
 
 ```
-### set shadow width
+### Set shadow width
 ```swift
 drawerController.shadowWidth = 5
 ```
 
-### set gesture recognizer width in main controller
+### Set gesture recognizer width in main controller
 ```swift
 drawerController.gestureRecognizerWidth = 40
 ```
 
-### should require failure of navigation pop gesture, default true (if setting false, showing left drawer gesture will have higher priority)
+### Should require failure of navigation pop gesture
+The default is true (if set to false, showing left drawer gesture will have higher priority)
 ```swift
 drawerController.shouldRequireFailureOfNavigationPopGesture = true
 ```
 
-### setup gestures priority, higher priority gestures will proc before drawer controller's gesture and lower priority gestures will proc after failure of drawer controller's gesture
+### Setup gestures priority
+Higher priority gestures will process before drawer controller's gesture and lower priority gestures will process after failure of drawer controller's gesture
 ```swift
 drawerController.higherPriorityGestures = [gesture1, gesture2]
 drawerController.lowerPriorityGestures = [gesture3, gesture4]
 ```
 
-### set the side or main controller dynamically
+### Set the side or main controller dynamically
 ```swift
 // set or replace
 drawerController.centerViewController = newViewController
@@ -156,7 +169,7 @@ drawerController.rightViewController = nil
 drawerController.leftViewController = nil
 ```
 
-### use ZKDrawerController as your root controller and show various main controller-based side controllers.
+### Use ZKDrawerController as your root controller and show various main controller-based side controllers.
 ```swift
 // in AppDelegate.swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
